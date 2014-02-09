@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<application xmlns="http://ns.adobe.com/air/application/3.9">
+  <id>TrainerTimer</id>
+  <versionNumber>1.0</versionNumber>
+  <filename>TrainerTimer</filename>
+  <name>TrainerTimer</name>
+  <initialWindow>
+    <title>TrainerTimer</title>
+    <content>TrainerTimer.swf</content>
+    <systemChrome>none</systemChrome>
+    <transparent>false</transparent>
+    <visible>true</visible>
+    <maximizable>false</maximizable>
+    <resizable>true</resizable>
+  </initialWindow>
+  <!-- 
+	More options:
+	http://livedocs.adobe.com/flex/3/html/File_formats_1.html#1043413
+	-->
+  <icon>
+    <image16x16>icons/TrainerTimer16.png</image16x16>
+    <image32x32>icons/TrainerTimer32.png</image32x32>
+  </icon>
+</application>
