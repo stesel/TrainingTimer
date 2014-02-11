@@ -173,6 +173,7 @@ package
 			{
 				window.x = Capabilities.screenResolutionX - window.width - TrainerTimer.OFF_SET_X;
 				window.y = Capabilities.screenResolutionY + TrainerTimer.OFF_SET_Y;
+				//window.minimize();
 			}
 		}
 		
