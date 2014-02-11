@@ -151,7 +151,7 @@ package
 			
 		}
 		
-		private function systrayClick(e:Event):void 
+		private function systrayClick(e:Event = null):void 
 		{
 			if (window)
 			{
@@ -407,10 +407,7 @@ package
 				soundChannel = sound.play();
 			else if (window)
 			{
-				window.activate();
-				window.alwaysInFront = true;
-				window.alwaysInFront = false;
-				alignInputText();
+				systrayClick();
 			}
 		}
 		
