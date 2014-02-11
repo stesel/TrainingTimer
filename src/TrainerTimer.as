@@ -86,6 +86,10 @@ package
 		private var soundButton:SoundButton_graph;
 		private var playSound:Boolean = true;
 		
+		private var roundText:InfoText;
+		private var roundCount:int = 1;
+		private var position:Point;
+		
 		public function TrainerTimer():void 
 		{
 			if (stage)
@@ -114,8 +118,8 @@ package
             var iconMenu:NativeMenu = new NativeMenu(); 
             var startCommand:NativeMenuItem = iconMenu.addItem(new NativeMenuItem("Start")); 
             var resetCommand:NativeMenuItem = iconMenu.addItem(new NativeMenuItem("Reset")); 
-            var openCommand:NativeMenuItem = iconMenu.addItem(new NativeMenuItem("Open")); 
-            var minimizeCommand:NativeMenuItem = iconMenu.addItem(new NativeMenuItem("Minimize")); 
+            var openCommand:NativeMenuItem = iconMenu.addItem(new NativeMenuItem("Show")); 
+            var minimizeCommand:NativeMenuItem = iconMenu.addItem(new NativeMenuItem("Hide")); 
             var aboutCommand:NativeMenuItem = iconMenu.addItem(new NativeMenuItem("About")); 
             var closeCommand:NativeMenuItem = iconMenu.addItem(new NativeMenuItem("Exit")); 
 			
@@ -151,6 +155,9 @@ package
 		{
 			if (window)
 			{
+				window.x = position.x;
+				window.y = position.y;
+				
 				window.activate();
 				window.restore();
 				window.alwaysInFront = true;
@@ -164,7 +171,8 @@ package
 		{
 			if (window)
 			{
-				window.minimize();
+				window.x = Capabilities.screenResolutionX - window.width - TrainerTimer.OFF_SET_X;
+				window.y = Capabilities.screenResolutionY + TrainerTimer.OFF_SET_Y;
 			}
 		}
 		
@@ -189,6 +197,9 @@ package
 		{
 			window = stage.nativeWindow;
 			window.title = "Trainer Timer";
+			position = new Point();
+			position.x = window.x;
+			position.y = window.y;
 			window.addEventListener(Event.CLOSING, closeApplication, false, 0, true);
 			
 			var background:Bitmap = new Background() as Bitmap;
@@ -211,6 +222,20 @@ package
 			titlecontainer.buttonMode = true;
 			titlecontainer.mouseChildren = false;
 			this.addChild(titlecontainer);
+			
+			roundText = new InfoText(22, 0x26e3db);
+			roundText.name = "Round: ";
+			roundText.setText( roundText.name );
+			roundText.width = roundText.textWidth + OFF_SET_X;
+			roundText.height = roundText.textHeight + OFF_SET_Y;
+			roundText.x = (stage.stageWidth - roundText.width) >> 1;
+			roundText.y = title.y + title.height + 1 * roundText.height;
+			roundText.border = true;
+			roundText.background = true;
+			roundText.backgroundColor = 0x000000;
+			roundText.type = TextFieldType.DYNAMIC;
+			roundText.multiline = false;
+			roundText.selectable = false;
 			
 			workTime = new InfoText(22, 0xffd21e);
 			workTime.name = "Input Work Time";
@@ -272,7 +297,6 @@ package
 		private function titleMouseMove(e:MouseEvent):void 
 		{
 			var bound:Rectangle = window.bounds;
-			var position:Point = new Point();
 			position.x = bound.x - mouseX0 + stage.mouseX;
 			position.y = bound.y - mouseY0 + stage.mouseY;
 			window.x = position.x;
@@ -367,6 +391,8 @@ package
 				playWorkEnd = true;
 				onAlarm();
 				window.notifyUser("Break End");
+				
+				roundText.setText(roundText.name + String(roundCount+=1));
 			}
 			
 			alignInputText();
@@ -391,6 +417,7 @@ package
 		{
 			workTime.x = (stage.stageWidth - workTime.width) >> 1;
 			breakTime.x = (stage.stageWidth - breakTime.width) >> 1;
+			roundText.x = (stage.stageWidth - roundText.width) >> 1;
 		}
 		
 		private function startButtonPressed(e:Event):void 
@@ -414,6 +441,13 @@ package
 				
 				timer.start();
 				playWorkEnd = true;
+				
+				roundCount = 1;
+				roundText.setText(roundText.name + String(roundCount));
+				this.addChild(roundText);
+				
+				workTime.setText("Working: " + String(workLeft));
+				breakTime.setText("Breaking: 0");
 			}
 			if (workT < 1)
 			{
@@ -452,6 +486,8 @@ package
 			alignInputText();
 			
 			startButton.enable();
+			
+			this.removeChild(roundText);
 		}
 		
 		private function textChange(e:Event):void 

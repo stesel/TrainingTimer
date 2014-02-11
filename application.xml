@@ -21,4 +21,8 @@
     <image16x16>icons/TrainerTimer16.png</image16x16>
     <image32x32>icons/TrainerTimer32.png</image32x32>
   </icon>
+  <description>Convenient timer for work training procces</description>
+  <copyright>Stesel Edition</copyright>
+  <versionLabel>Freeware</versionLabel>
+  <supportedLanguages>en</supportedLanguages>
 </application>
